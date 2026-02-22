@@ -78,25 +78,25 @@ router.post('/login', authLimiter, async (req, res) => {
   await user.fetchInfo()
 
   // Crea un token JWT
-  const token = jwt.sign({ 
-    username: user.username, 
-    user_id: user_id, 
-    is_artist: user.isArtist, 
-    subscription: user.subscription 
+  const token = jwt.sign({
+    username: user.username,
+    user_id: user_id,
+    is_artist: user.isArtist,
+    subscription: user.subscription
   }, process.env.SECRET_KEY, { expiresIn: "30d" });
 
   // Invia il token al client
   if (user.isVerified) {
-    return res.json({ 
-      token, 
-      username: user.username, 
-      user_id, 
-      is_artist: user.isArtist, 
-      subscription: user.subscription, 
-      is_verified: user.isVerified 
+    return res.json({
+      token,
+      username: user.username,
+      user_id,
+      is_artist: user.isArtist,
+      subscription: user.subscription,
+      is_verified: user.isVerified
     });
   } else {
-    return res.status(403).json({ is_verified });
+    return res.status(403).json({ is_verified: user.isVerified });
   }
 });
 
